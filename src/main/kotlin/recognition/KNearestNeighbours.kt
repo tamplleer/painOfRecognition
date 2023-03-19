@@ -4,12 +4,8 @@ package recognition
 class KNearestNeighbours(private val k: Int, private val dataset: List<Item>) {
 
     fun search(input: List<Int>, metric: Metric): Int {
-        val x = dataset.associateWith { orig ->
-            metric(orig.data, input)
-        }.entries.sortedBy { it.value }
-
-        return dataset.associateWith { orig ->
-            metric(orig.data, input)
+        return dataset.associateWith { item ->
+            metric(item.data, input)
         }.entries.sortedBy { it.value }
             .take(k).groupingBy { it.key.number }
             .eachCount().maxByOrNull { it.value }!!.key
@@ -18,7 +14,7 @@ class KNearestNeighbours(private val k: Int, private val dataset: List<Item>) {
 
 fun runCheckWithImg(dataPaint: List<Int>, k: Int, dataset: List<Item>) {
     val knn = KNearestNeighbours(k, dataset)
-    val metrics = listOf<Metric>(::manhattan, ::euclidean, ::chebyshyov)
+    val metrics = listOf<Metric>(::manhattan, ::euclidean,::euclideanPow, ::chebyshyov)
         .associateWith { mutableMapOf<Int, MutableMap<Int, Int>>() }
 
     metrics.forEach { (metric, table) ->
@@ -34,6 +30,7 @@ fun runCheckDefault(
     center: Double = 0.4,
     middle: Double = 0.3,
     edges: Double = 0.2,
+    etalonDataset:List<Item>,
     dataset: List<Item>
 ) {
     val knn = KNearestNeighbours(k, dataset)
@@ -41,7 +38,7 @@ fun runCheckDefault(
         .associateWith { mutableMapOf<Int, MutableMap<Int, Int>>() }
 
 
-    dataset.forEach { standardNumber ->
+    etalonDataset.forEach { standardNumber ->
         repeat(iteration) {
             val dataNoisy = if (noiseEvenly) noiseEvenly(allNoise, standardNumber.data) else noiseUneven(
                 standardNumber.data,
@@ -68,26 +65,24 @@ fun runCheckDefault(
                 .sortedByDescending { (key, value) -> value }
                 .toMap()
         }.entries.forEach {
-            println(it.value)
-         /*   println(
+        //    println(it)
+            println(
                 "${it.key}:${
                     it.value.entries.map {
                         "${it.key}=${
-                            String.format("%.0f",  getPercent(
+                            String.format("%.1f",  getPercent(
                                 it.value,
-                                dataset.size,
                                 iteration
                             ))
-                          
                         }%"
                     }
                 }"
-            )*/
+            )
         }
         println()
     }
 }
 
-fun getPercent(number: Int, datasetSize: Int, iteration: Int): Double {
-    return 100 / (iteration * (datasetSize / 10)).toDouble() * number
+fun getPercent(number: Int, iteration: Int): Double {
+    return (100.0 /iteration) * number
 }

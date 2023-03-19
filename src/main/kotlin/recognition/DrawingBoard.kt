@@ -57,7 +57,7 @@ class DrawingBoard : Application() {
 
     override fun stop() {
         setPaintLatch()
-        ShowData(getPixelData())
+        //ShowData(getPixelData())
         runCheckWithImg(getPixelDataInt(), 1,standardNumbers)
     }
 
