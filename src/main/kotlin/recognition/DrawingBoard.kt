@@ -7,7 +7,7 @@ import javafx.scene.canvas.GraphicsContext
 import javafx.scene.layout.BorderPane
 import javafx.scene.paint.Color
 import javafx.stage.Stage
-import standardNumbers
+import recognition.dataset.standardNumbers
 import java.util.concurrent.CountDownLatch
 
 class DrawingBoard : Application() {
@@ -57,7 +57,7 @@ class DrawingBoard : Application() {
 
     override fun stop() {
         setPaintLatch()
-        ShowData(getPixelData())
+        //ShowData(getPixelData())
         runCheckWithImg(getPixelDataInt(), 1,standardNumbers)
     }
 
