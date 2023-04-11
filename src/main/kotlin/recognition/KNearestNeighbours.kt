@@ -4,6 +4,9 @@ package recognition
 class KNearestNeighbours(private val k: Int, private val dataset: List<Item>) {
 
     fun search(input: List<Int>, metric: Metric): Int {
+        val x = dataset.associateWith { item ->
+            metric(item.data, input)
+        }.entries.sortedBy { it.value }
         return dataset.associateWith { item ->
             metric(item.data, input)
         }.entries.sortedBy { it.value }
@@ -25,6 +28,7 @@ fun runCheckWithImg(dataPaint: List<Int>, k: Int, dataset: List<Item>) {
 fun runCheckDefault(
     iteration: Int,
     noiseEvenly: Boolean,
+    shadows:Boolean,
     k: Int,
     allNoise: Double = 0.4,
     center: Double = 0.4,
@@ -40,8 +44,9 @@ fun runCheckDefault(
 
     etalonDataset.forEach { standardNumber ->
         repeat(iteration) {
-            val dataNoisy = if (noiseEvenly) noiseEvenly(allNoise, standardNumber.data) else noiseUneven(
+            val dataNoisy = if (noiseEvenly) noiseEvenly(allNoise, standardNumber.data,shadows) else noiseUneven(
                 standardNumber.data,
+                shadows,
                 center,
                 middle,
                 edges

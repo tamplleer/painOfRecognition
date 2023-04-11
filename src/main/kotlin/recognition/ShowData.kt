@@ -20,9 +20,9 @@ fun ShowData(dataFromPaint: List<Double>) {
     )
 
     val noise = if (shadows) {
-        noiseWithShadows(matrix)
+        noiseWithShadows(matrix,0.4,0.2,0.1)
     } else {
-        noiseUneven(matrix,0.4,0.2,0.1)
+        noiseUneven(matrix,false,0.4,0.2,0.1)
     }
 
 
