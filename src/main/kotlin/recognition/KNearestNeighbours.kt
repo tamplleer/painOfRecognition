@@ -4,10 +4,6 @@ package recognition
 class KNearestNeighbours(private val k: Int, private val dataset: List<Item>) {
 
     fun search(input: List<Int>, metric: Metric): Int {
-        val x = dataset.associateWith { orig ->
-            metric(orig.data, input)
-        }.entries.sortedBy { it.value }
-
         return dataset.associateWith { orig ->
             metric(orig.data, input)
         }.entries.sortedBy { it.value }

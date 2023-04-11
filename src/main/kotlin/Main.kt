@@ -3,6 +3,8 @@ import recognition.DrawingBoard
 import recognition.Item
 import recognition.itm
 import recognition.runCheckDefault
+import smallestSquares.Charts
+import smallestSquares.GenerateData
 
 val standardNumbers: List<Item> = listOf(
     listOf(
@@ -213,10 +215,12 @@ val noiseNumbers: List<Item> = listOf(
     )
 
 fun main() {
-    val isPaint = false
-    if (isPaint) {
-        Application.launch(DrawingBoard::class.java)
-    } else {
-        runCheckDefault(1000, true, 1, 0.4, 0.4, 0.3, 0.2, standardNumbers + noiseNumbers)
-    }
+    /*   val isPaint = false
+       if (isPaint) {
+           Application.launch(DrawingBoard::class.java)
+       } else {
+           runCheckDefault(1000, true, 1, 0.4, 0.4, 0.3, 0.2, standardNumbers + noiseNumbers)
+       }*/
+    GenerateData.create("sin",4,0.5,0.1,0.3,10)
+    Application.launch(Charts::class.java)
 }
