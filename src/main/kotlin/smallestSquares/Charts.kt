@@ -22,7 +22,7 @@ class Charts : Application() {
        lineChart.data.add(Series<Number, Number>())
 
         val dataSeries = Series<Number, Number>()
-        dataSeries.name = GenerateData.polenomName
+        dataSeries.name = GenerateData.polynomName
        GenerateData.xValueNew.forEachIndexed{ index, value ->
            dataSeries.data.add(XYChart.Data(value, GenerateData.yValueNew[index]))
        }
