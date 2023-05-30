@@ -19,35 +19,25 @@ class Charts : Application() {
         // Создание графика
         val lineChart = LineChart(xAxis, yAxis)
 
-       lineChart.data.add(Series<Number, Number>())
+       lineChart.data.add(Series())
 
-        val dataSeries = Series<Number, Number>()
-        dataSeries.name = GenerateData.polynomName
-       GenerateData.xValueNew.forEachIndexed{ index, value ->
-           dataSeries.data.add(XYChart.Data(value, GenerateData.yValueNew[index]))
-       }
-       lineChart.data.add(dataSeries)
+        val after = Series<Number, Number>()
 
-
-        val dataSeries1 = Series<Number, Number>()
-        dataSeries1.name = "y = ${GenerateData.funName}"
-       GenerateData.xValue.forEachIndexed{ index, value ->
-           dataSeries1.data.add(XYChart.Data(value, GenerateData.yValue[index]))
+        after.name = Calculation.polynomName
+       Calculation.xValueNew.toList().forEachIndexed{ index, value ->
+           after.data.add(XYChart.Data(value, Calculation.yValueNew[index]))
        }
 
-       lineChart.data.add(dataSeries1)
-       dataSeries1.node.lookup(".chart-series-line").style= "-fx-stroke: transparent;"
-       dataSeries1.node.lookupAll(".chart-line-symbol").forEach { symbol ->
-           symbol.style = "-fx-fill: green;  -fx-background-radius: 15px;-fx-background-color: blue;"}
+        val before = Series<Number, Number>()
+        before.name = "y = ${Calculation.funName}"
+       Calculation.xValue.forEachIndexed{ index, value ->
+           before.data.add(XYChart.Data(value, Calculation.yValue[index]))
+       }
+        lineChart.data.add(after)
+        lineChart.data.add(before)
 
-/*
-       for (data in dataSeries1.data) {
-           val node = Circle(15.0) // создание круговой точки
-           node.style = "-fx-fill: green;  -fx-background-radius: 15px;-fx-background-color: blue;" // установка красного цвета точки
-           data.node = node // установка точки для данных
-       }*/
 
-        // Создание сцены и отображение графика
+        // отображение графика
         val scene = Scene(lineChart, 800.0, 600.0)
         primaryStage.scene = scene
         primaryStage.show()

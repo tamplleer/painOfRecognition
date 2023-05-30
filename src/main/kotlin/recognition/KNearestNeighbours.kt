@@ -10,6 +10,13 @@ class KNearestNeighbours(private val k: Int, private val dataset: List<Item>) {
             .take(k).groupingBy { it.key.number }
             .eachCount().maxByOrNull { it.value }!!.key
     }
+
+    fun neighborhood(input: List<Int>, metric: Metric): List<Item> {
+        return dataset.associateWith { item ->
+            metric(item.data, input)
+        }.entries.sortedBy { it.value }
+            .take(k).map { it.key }
+    }
 }
 
 fun runCheckWithImg(dataPaint: List<Int>, k: Int, dataset: List<Item>) {
